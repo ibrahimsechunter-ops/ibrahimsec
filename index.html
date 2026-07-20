@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ibrahim.sec — أكواد وحلول برمجية جاهزة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0F14;
+    --panel:#12171F;
+    --panel-2:#171E27;
+    --line:#232C37;
+    --amber:#E8A33D;
+    --amber-dim:#8A6423;
+    --blue:#6E9FC1;
+    --text:#E7EDF3;
+    --muted:#8A97A5;
+    --good:#4ADE80;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;text-decoration:none;}
+
+  /* background grid texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    opacity:0.15;
+    pointer-events:none;
+    z-index:0;
+  }
+  .wrap{max-width:1120px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(10px);
+    background:rgba(11,15,20,0.75);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px; max-width:1120px; margin:0 auto;
+  }
+  .logo{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700; font-size:18px; letter-spacing:0.5px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--good); box-shadow:0 0 8px var(--good); display:inline-block;}
+  .logo span.sec{color:var(--amber);}
+  .nav-links{display:flex; gap:32px; font-size:14px; color:var(--muted);}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--amber); color:#1a1204; font-weight:700; font-size:14px;
+    padding:9px 18px; border-radius:6px; font-family:'JetBrains Mono',monospace;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .nav-cta:hover{transform:translateY(-1px); box-shadow:0 6px 20px rgba(232,163,61,0.25);}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  .promo-bar{
+    background:linear-gradient(90deg, var(--amber-dim), var(--amber));
+    color:#1a1204; text-align:center; font-size:13.5px; font-weight:600;
+    padding:8px 16px;
+  }
+  .promo-bar strong{font-family:'JetBrains Mono',monospace;}
+
+  /* HERO */
+  .hero{
+    padding:90px 0 70px;
+    display:grid; grid-template-columns:1.1fr 1fr; gap:56px; align-items:center;
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding:50px 0;} }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:13px; color:var(--amber);
+    display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .eyebrow::before{content:"$"; color:var(--muted);}
+  .eyebrow .blink{animation:blink 1.1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  h1{
+    font-size:clamp(34px, 5vw, 54px);
+    font-weight:700; line-height:1.25; margin-bottom:22px;
+    letter-spacing:-0.5px;
+  }
+  h1 .accent{color:var(--amber);}
+  .hero p.lead{
+    font-size:18px; color:var(--muted); max-width:520px; margin-bottom:34px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn-primary{
+    background:var(--amber); color:#1a1204; font-weight:700; padding:15px 28px;
+    border-radius:8px; font-size:15px; display:inline-flex; align-items:center; gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(232,163,61,0.3);}
+  .btn-secondary{
+    border:1px solid var(--line); color:var(--text); padding:15px 28px; border-radius:8px;
+    font-size:15px; display:inline-flex; align-items:center; gap:10px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-secondary:hover{border-color:var(--blue); background:rgba(110,159,193,0.08);}
+
+  /* TERMINAL SIGNATURE ELEMENT */
+  .terminal{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    overflow:hidden; box-shadow:0 30px 60px rgba(0,0,0,0.45);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px; padding:12px 16px;
+    background:var(--panel-2); border-bottom:1px solid var(--line);
+  }
+  .term-dot{width:11px;height:11px;border-radius:50%;}
+  .term-bar .filename{
+    margin-inline-start:auto; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+    direction:ltr;
+  }
+  .term-body{
+    padding:22px 22px 26px; font-family:'JetBrains Mono', monospace; font-size:13.5px;
+    direction:ltr; text-align:left; min-height:280px;
+  }
+  .term-body .ln{color:var(--muted); display:inline-block; width:22px; user-select:none;}
+  .term-line{white-space:pre; opacity:0; animation:reveal .3s forwards;}
+  .kw{color:var(--blue);} .str{color:var(--amber);} .cm{color:#5C6773;} .fn{color:#B392F0;} .num{color:#79C0FF;}
+  @keyframes reveal{to{opacity:1;}}
+  .cursor{display:inline-block; width:7px; height:15px; background:var(--amber); vertical-align:middle; animation:blink 1s steps(1) infinite;}
+
+  /* SECTIONS */
+  section{padding:80px 0;}
+  .section-head{max-width:600px; margin-bottom:48px;}
+  .kicker{
+    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--amber);
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; display:block;
+  }
+  .section-head h2{font-size:clamp(26px,3.6vw,36px); font-weight:700; margin-bottom:14px;}
+  .section-head p{color:var(--muted); font-size:16px;}
+
+  /* SERVICES GRID */
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  @media (max-width:860px){.grid-3{grid-template-columns:1fr;}}
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:28px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{border-color:var(--amber-dim); transform:translateY(-4px);}
+  .card .tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--blue);
+    background:rgba(110,159,193,0.1); padding:4px 10px; border-radius:5px; display:inline-block; margin-bottom:16px;
+  }
+  .card h3{font-size:19px; font-weight:600; margin-bottom:10px;}
+  .card p{color:var(--muted); font-size:14.5px;}
+
+  /* PROCESS */
+  .process{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line); border-radius:12px; overflow:hidden;
+  }
+  @media (max-width:860px){.process{grid-template-columns:1fr;}}
+  .proc-step{
+    padding:30px 26px; border-inline-end:1px solid var(--line); position:relative;
+  }
+  .process .proc-step:last-child{border-inline-end:none;}
+  @media (max-width:860px){.proc-step{border-inline-end:none; border-bottom:1px solid var(--line);} .proc-step:last-child{border-bottom:none;}}
+  .proc-step .num{
+    font-family:'JetBrains Mono',monospace; color:var(--amber-dim); font-size:13px; margin-bottom:14px; display:block;
+  }
+  .proc-step h4{font-size:16px; font-weight:600; margin-bottom:8px;}
+  .proc-step p{color:var(--muted); font-size:14px;}
+
+  /* WHY / STATS */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  @media (max-width:860px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{text-align:center; padding:20px;}
+  .stat .n{font-family:'JetBrains Mono',monospace; font-size:32px; font-weight:700; color:var(--amber);}
+  .stat .l{color:var(--muted); font-size:13.5px; margin-top:6px;}
+
+  /* CONTACT */
+  .contact-panel{
+    background:linear-gradient(160deg, var(--panel) 0%, var(--panel-2) 100%);
+    border:1px solid var(--line); border-radius:16px; padding:56px 40px; text-align:center; position:relative; overflow:hidden;
+  }
+  .contact-panel::after{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(232,163,61,0.08), transparent 60%);
+    pointer-events:none;
+  }
+  .contact-panel h2{font-size:clamp(24px,3.4vw,34px); margin-bottom:14px; font-weight:700;}
+  .contact-panel p{color:var(--muted); max-width:480px; margin:0 auto 34px; font-size:16px;}
+  .contact-btns{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+  .btn-whatsapp{
+    background:#25D366; color:#04170a; font-weight:700; padding:16px 30px; border-radius:9px;
+    display:inline-flex; align-items:center; gap:10px; font-size:15.5px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-whatsapp:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(37,211,102,0.3);}
+  .btn-email{
+    border:1px solid var(--line); color:var(--text); padding:16px 30px; border-radius:9px;
+    display:inline-flex; align-items:center; gap:10px; font-size:15.5px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-email:hover{border-color:var(--blue); background:rgba(110,159,193,0.08);}
+  .contact-meta{margin-top:26px; font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--muted); direction:ltr;}
+
+  footer{
+    border-top:1px solid var(--line); padding:32px 0; text-align:center; color:var(--muted); font-size:13.5px;
+  }
+  footer .mono{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>ibrahim<span class="sec">.sec</span></div>
+    <div class="nav-links">
+      <a href="#services">الخدمات</a>
+      <a href="#process">آلية العمل</a>
+      <a href="#why">ليش أنا؟</a>
+      <a href="#contact">تواصل</a>
+    </div>
+    <a href="#contact" class="nav-cta">ابدأ مشروعك</a>
+  </nav>
+  <div class="promo-bar">
+    🎉 عرض لفترة محدودة: خصم <strong>20%</strong> على أول مشروع لأي زبون جديد
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">status: <span style="color:var(--good)">available for hire</span><span class="blink mono">_</span></div>
+      <h1>بدّل الشغل اليدوي بكود <span class="accent">يشتغل عنك.</span></h1>
+      <p class="lead">
+        بكتب أكواد وحلول برمجية جاهزة: أتمتة إكسل، ماكروهات، سكربتات بايثون، وأدوات مخصصة تحل مشكلة حقيقية عندك — مش قوالب جاهزة من الإنترنت.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">تواصل معي الآن ←</a>
+        <a href="#services" class="btn-secondary">شوف الخدمات</a>
+      </div>
+    </div>
+
+    <div class="terminal">
+      <div class="term-bar">
+        <div class="term-dot" style="background:#FF5F57"></div>
+        <div class="term-dot" style="background:#FEBC2E"></div>
+        <div class="term-dot" style="background:#28C840"></div>
+        <span class="filename">auto_report.py</span>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="services">
+  <section>
+    <div class="section-head">
+      <span class="kicker">// الخدمات</span>
+      <h2>شغل برمجي بيوفرلك وقت وفلوس</h2>
+      <p>كل خدمة بتتصمم على حسب شغلك، مش نسخة موحدة لكل الزباين.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <span class="tag">Excel & VBA</span>
+        <h3>أتمتة ملفات إكسل</h3>
+        <p>ماكروهات وأكواد VBA بتحول التقارير اليومية والشهرية من ساعات لثواني، مع أزرار وواجهات سهلة الاستخدام.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Python</span>
+        <h3>سكربتات وأتمتة</h3>
+        <p>سكربتات بايثون لمعالجة البيانات، سحب معلومات من مواقع أو ملفات، وربط أنظمة ببعضها تلقائياً.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Custom Tools</span>
+        <h3>أدوات وأكواد مخصصة</h3>
+        <p>أي فكرة عندك لأداة أو حل برمجي — بنحولها لكود شغال وموثوق، مبني حسب احتياجك تحديداً.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="process">
+  <section>
+    <div class="section-head">
+      <span class="kicker">// آلية العمل</span>
+      <h2>من الفكرة للتسليم</h2>
+    </div>
+    <div class="process">
+      <div class="proc-step">
+        <span class="num">01</span>
+        <h4>تبعتلي المشكلة</h4>
+        <p>تشرحلي شو بتحتاج بالضبط عبر واتساب أو إيميل.</p>
+      </div>
+      <div class="proc-step">
+        <span class="num">02</span>
+        <h4>تحديد الحل</h4>
+        <p>بحدد أفضل طريقة برمجية، والوقت والتكلفة المتوقعة.</p>
+      </div>
+      <div class="proc-step">
+        <span class="num">03</span>
+        <h4>التنفيذ</h4>
+        <p>بكتب الكود وبختبره، وممكن تتابع التقدم لحظة بلحظة.</p>
+      </div>
+      <div class="proc-step">
+        <span class="num">04</span>
+        <h4>التسليم والدعم</h4>
+        <p>بسلمك الملف/الأداة جاهزة، مع شرح استخدامها ودعم بعد التسليم.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="why">
+  <section>
+    <div class="section-head">
+      <span class="kicker">// ليش أنا</span>
+      <h2>خبرة حقيقية، مش وعود</h2>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">100%</div><div class="l">أكواد مخصصة</div></div>
+      <div class="stat"><div class="n">24h</div><div class="l">رد سريع</div></div>
+      <div class="stat"><div class="n">Excel/VBA</div><div class="l">تخصص أساسي</div></div>
+      <div class="stat"><div class="n">دعم</div><div class="l">بعد التسليم</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap" id="contact">
+  <section>
+    <div class="contact-panel">
+      <h2>خلينا نبلش على مشروعك</h2>
+      <p>ابعتلي تفاصيل المشكلة أو الفكرة، وبرجعلك بأسرع وقت ممكن.</p>
+      <div class="contact-btns" id="contactBtns"></div>
+      <div class="contact-meta" id="contactMeta"></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap"><span class="mono">ibrahim.sec</span> — حلول وأكواد برمجية مخصصة</div>
+</footer>
+
+<script>
+  const lines = [
+    {t:'<span class="cm"># تحويل تقرير المبيعات الشهري تلقائياً</span>', d:0},
+    {t:'<span class="kw">import</span> pandas <span class="kw">as</span> pd', d:0},
+    {t:'', d:0},
+    {t:'df = pd.<span class="fn">read_excel</span>(<span class="str">"sales_raw.xlsx"</span>)', d:0},
+    {t:'df[<span class="str">"total"</span>] = df.qty * df.price', d:0},
+    {t:'', d:0},
+    {t:'<span class="fn">summary</span> = df.groupby(<span class="str">"region"</span>).sum()', d:0},
+    {t:'summary.<span class="fn">to_excel</span>(<span class="str">"report_final.xlsx"</span>)', d:0},
+    {t:'', d:0},
+    {t:'<span class="cm">>>> تم إنشاء التقرير في <span class="num">3.2</span>s ✔</span>', d:0},
+  ];
+  const body = document.getElementById('termBody');
+  let delay = 300;
+  lines.forEach((line, i) => {
+    const el = document.createElement('div');
+    el.className = 'term-line';
+    el.style.animationDelay = delay + 'ms';
+    el.innerHTML = `<span class="ln">${i+1}</span>${line.t}`;
+    body.appendChild(el);
+    delay += 260;
+  });
+  setTimeout(() => {
+    const cur = document.createElement('span');
+    cur.className = 'cursor';
+    body.appendChild(cur);
+  }, delay);
+
+  // بناء معلومات التواصل وقت التحميل بدل كتابتها كنص صريح بالكود
+  // (بيحمي من بوتات جمع الإيميلات/الأرقام يلي بتفحص الصفحة كنص ثابت)
+  (function(){
+    const phoneParts = ['963','991','137','285'];
+    const phone = phoneParts.join('');
+    const emailParts = ['ibrahim.sec.hunter', 'gmail.com'];
+    const email = emailParts.join('@');
+
+    const btnWrap = document.getElementById('contactBtns');
+    const waLink = document.createElement('a');
+    waLink.className = 'btn-whatsapp';
+    waLink.target = '_blank';
+    waLink.rel = 'noopener';
+    waLink.href = 'https://wa.me/' + phone;
+    waLink.textContent = '💬 تواصل واتساب';
+
+    const emailLink = document.createElement('a');
+    emailLink.className = 'btn-email';
+    emailLink.textContent = '✉️ راسلني إيميل';
+    emailLink.addEventListener('click', function(e){
+      e.preventDefault();
+      window.location.href = 'mailto:' + email;
+    });
+
+    btnWrap.appendChild(waLink);
+    btnWrap.appendChild(emailLink);
+
+    const meta = document.getElementById('contactMeta');
+    meta.textContent = '+' + phone.slice(0,3) + ' ' + phone.slice(3,6) + ' ' + phone.slice(6,9) + ' ' + phone.slice(9) + ' · ' + email;
+  })();
+</script>
+
+</body>
+</html>
